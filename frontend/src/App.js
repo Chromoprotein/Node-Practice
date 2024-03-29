@@ -6,7 +6,7 @@ function App() {
   const [food, setFood] = useState([]);
 
   useEffect(() => {
-    axios.get('/item')
+    axios.get('https://node-practice-3-5ada42a694c6.herokuapp.com/item')
     .then(res => {
       console.log(res.data.data)
       setFood(res.data.data);
