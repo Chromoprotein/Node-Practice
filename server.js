@@ -26,13 +26,17 @@ app.get("/item", (req,res) => {
 
 })
 
-// Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, 'frontend/build')));
+if (process.env.NODE_ENV === 'production') {
 
-//This one should be the last
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'frontend/build', 'index.html'));
-});
+    // Have Node serve the files for our built React app
+    app.use(express.static(path.resolve(__dirname, 'frontend/build')));
+
+    //This one should be the last
+    app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend/build', 'index.html'));
+    });
+
+}
 
 //process.env.PORT for deployment, 8000 for local development
 app.listen(process.env.PORT || 8000, () => {
