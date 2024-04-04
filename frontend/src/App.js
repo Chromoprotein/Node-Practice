@@ -1,44 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 function App() {
 
-  const [food, setFood] = useState([]);
+  const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    axios.get('https://node-practice-3-5ada42a694c6.herokuapp.com/item')
-    .then(res => {
-      console.log(res.data.data)
-      setFood(res.data.data);
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }, [])
+    // Decode JWT token to extract user information
+    const token = cookies.jwt;
+    if (token) {
+      console.log("Token exists")
+      const decodedToken = parseJwt(token);
+      setUserData(decodedToken);
+    }
+  }, [cookies.jwt]);
+
+  // Function to parse JWT token
+  const parseJwt = (token) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      console.log("Token is valid")
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.log("Invalid token")
+    }
+  };
 
   return (
-    <React.Fragment>
-      <table>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Food</th>
-            <th>Opinion</th>
-          </tr>
-        </thead>
-        <tbody>
-          {food.map(item => {
-            return (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.food}</td>
-                <td>{item.opinion}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </React.Fragment>
+    <div>
+    <div>
+      {userData ? (
+        <div>
+          <p>Username: {userData.username}</p>
+          <p>User ID: {userData.id}</p>
+          <p>Role: {userData.role}</p>
+          {/* Additional user information can be displayed here */}
+        </div>
+      ) : (
+        <p>User not logged in</p>
+      )}
+    </div>
+
+    <nav>
+      <ul>
+        <li>
+          <Link to={`register`}>Register</Link>
+        </li>
+        <li>
+          <Link to={`login`}>Login</Link>
+        </li>
+        <li>
+          <Link to={`getUsers`}>Users</Link>
+        </li>
+        <li>
+          <Link to={`admin`}>Admin page</Link>
+        </li>
+      </ul>
+    </nav>
+    </div>
   );
 }
 
