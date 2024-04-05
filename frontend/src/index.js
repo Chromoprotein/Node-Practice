@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {
+  Route,
   createBrowserRouter,
   RouterProvider,
+  createRoutesFromElements
 } from "react-router-dom";
 import Register from './Register';
 import Login from './Login';
@@ -12,33 +14,23 @@ import Users from './Users';
 import Admin from './Admin';
 import App from './App';
 
-const router = createBrowserRouter([
-  {
-    path: "/register",
-    element: <Register/>
-  },
-  {
-    path: "/login",
-    element: <Login/>
-  },
-  {
-    path: "/getUsers",
-    element: <Users/>
-  },
-  {
-    path: "/admin",
-    element: <Admin/>
-  },
-  {
-    path: "/",
-    element: <App/>
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/">        
+      <Route index element={<App />} />
+      <Route path="register" element={<Register />} />
+      <Route path="login" element={<Login />} />
+      <Route path="getUsers" element={<Users />} />
+      <Route path="admin" element={<Admin />} />
+      <Route path="*" element={<h1>Page not found</h1>} />
+    </Route>
+  )
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
   </React.StrictMode>
 );
 

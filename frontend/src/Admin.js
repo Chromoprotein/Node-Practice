@@ -47,8 +47,9 @@ export default function Admin() {
                 }
             );
             console.log(response.data);
+
             // Fetch the updated user list
-            const updatedUsers = await axios.get(process.env.REACT_APP_USERS_URI);
+            const updatedUsers = await axios.get(process.env.REACT_APP_USERS_URI, { withCredentials: true });
             setUsers(updatedUsers.data.user);
         } catch (error) {
             console.error(error);

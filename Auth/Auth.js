@@ -29,14 +29,12 @@ exports.register = async (req, res, next) => {
         );
         res.cookie("jwt", token, {
           path: '/',
-          secure: true,
           httpOnly: true,
           maxAge: maxAge * 1000, // 3hrs in ms
         });
         res.status(201).json({
           message: "User successfully created",
           user: user._id,
-          jwt: token,
         });
       })
       .catch((error) =>
@@ -77,14 +75,12 @@ exports.login = async (req, res, next) => {
           );
           res.cookie("jwt", token, {
             path: '/',
-            secure: true,
             httpOnly: true,
             maxAge: maxAge * 1000, // 3hrs in ms
           });
           res.status(201).json({
             message: "User successfully Logged in",
             user: user._id,
-            jwt: token, // So the browser can set the cookie
           });
         } else {
           res.status(400).json({ message: "Login not succesful" });

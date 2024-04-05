@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useCookies } from "react-cookie";
+import { Link } from 'react-router-dom';
 
 export default function Login() {
-  const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
-
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -26,9 +24,7 @@ export default function Login() {
             { withCredentials: true }
           );
           if (response.status === 201) {
-              const token = response.data.jwt;
-              setCookie('jwt', token, { path: '/', secure: true, httpOnly: true }); // Set the JWT token as a cookie
-              console.log(response.data)
+              console.log("user logged in")
           }
       } catch (error) {
           console.error(error);
@@ -56,6 +52,8 @@ export default function Login() {
         />
       </div>
       <button type="submit">Log in</button>
+
+      <Link to={`/`}>Home</Link>
     </form>
   );
 };
