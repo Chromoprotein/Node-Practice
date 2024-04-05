@@ -154,3 +154,19 @@ exports.getUsers = async (req, res, next) => {
       res.status(401).json({ message: "Not successful", error: err.message })
     )
 }
+
+exports.userStatus = async (req, res, next) => {
+  const token = req.cookies.jwt
+  if (token) {
+    jwt.verify(token, jwtSecret, (err, decodedToken) => {
+      if (err) {
+        return res.json({ isAuthenticated: false })
+      } else {
+        return res.json({ isAuthenticated: true, role: decodedToken.role })
+      }
+    })
+  } else {
+    return res
+      .json({ isAuthenticated: false })
+  }
+}
