@@ -4,6 +4,7 @@ import { useAuth } from './useAuth';
 
 function App() {
   const { isAuthenticated, userRole } = useAuth();
+
   return (
     <div>
 

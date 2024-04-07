@@ -6,7 +6,7 @@ import axios from 'axios';
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
-  
+
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
@@ -27,15 +27,15 @@ export const useAuth = () => {
 };
 
 
-export default function User() {
+//export default function User() {
 
-    const { isAuthenticated, userRole } = useAuth();
+//    const { isAuthenticated, userRole } = useAuth();
 
-    return (
-        <div>
-            <p>User authentication test page</p>
-            <p>Is authenticated: {isAuthenticated.toString()} </p>
-            <p>Role: {userRole} </p>
-        </div>
-    );
-};
+//    return (
+//        <div>
+//            <p>User authentication test page</p>
+//            <p>Is authenticated: {isAuthenticated.toString()} </p>
+//            <p>Role: {userRole} </p>
+//        </div>
+//    );
+//};
