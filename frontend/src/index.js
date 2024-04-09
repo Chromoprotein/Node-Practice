@@ -14,6 +14,7 @@ import Login from './Login';
 import Users from './Users';
 import Admin from './Admin';
 import App from './App';
+import Books from './Books';
 import axios from 'axios';
 
 const router = createBrowserRouter(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="register" element={<Register />} />
       <Route path="login" element={<Login />} />
       <Route path="getUsers" element={<Users />} />
+      <Route path="getBooks" element={<Books />} />
       <Route
         path="/admin"
         element={

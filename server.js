@@ -31,10 +31,9 @@ app.use(express.json());
 // deleteUser
 app.use("/api/auth", require("./Auth/Route"))
 
-// Protect routes not related to authentication
-// to do: put something in these routes
+// To do: put something in admin
 app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
-//app.get("/basic", userAuth, (req, res) => res.send("User Route"));
+app.use("/basic", require("./Basic/Route"))
 
 if (process.env.NODE_ENV === 'production') {
 

@@ -37,6 +37,7 @@ exports.userAuth = (req, res, next) => {
         if (decodedToken.role !== "Basic" && decodedToken.role !== "admin") {
           return res.status(401).json({ message: "Not authorized" })
         } else {
+          req.id = decodedToken.id;
           next()
         }
       }
