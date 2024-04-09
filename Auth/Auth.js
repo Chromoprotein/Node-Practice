@@ -138,6 +138,7 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
+// Lists all the users
 exports.getUsers = async (req, res, next) => {
   await User.find({})
     .then(users => {
@@ -155,6 +156,7 @@ exports.getUsers = async (req, res, next) => {
     )
 }
 
+// Checks if the user is logged in or an admin, for rendering content
 exports.userStatus = async (req, res, next) => {
   const token = req.cookies.jwt
   if (token) {
