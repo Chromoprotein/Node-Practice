@@ -20,9 +20,16 @@ function App() {
             </li>
           </>
         }
-        <li>
-          <Link to={`getUsers`}>Users</Link>
-        </li>
+        {isAuthenticated &&
+          <>
+            <li>
+              <Link to={`getUsers`}>Users</Link>
+            </li>
+            <li>
+              <Link to={`getBooks`}>Books</Link>
+            </li>
+          </>
+        }
         {userRole === "admin" &&
           <li>
             <Link to={`admin`}>Admin page</Link>

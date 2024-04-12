@@ -23,14 +23,28 @@ const router = createBrowserRouter(
       <Route index element={<App />} />
       <Route path="register" element={<Register />} />
       <Route path="login" element={<Login />} />
-      <Route path="getUsers" element={<Users />} />
-      <Route path="getBooks" element={<Books />} />
+      <Route
+        path="getUsers"
+        element={
+          <RequireAuth redirectTo="/login" requireAdmin={false}>
+            <Users />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="getBooks"
+        element={
+          <RequireAuth redirectTo="/login" requireAdmin={false}>
+            <Books />
+          </RequireAuth>
+        }
+      />
       <Route
         path="/admin"
         element={
-          <RequireAdmin redirectTo="/login">
+          <RequireAuth redirectTo="/login" requireAdmin={true}>
             <Admin />
-          </RequireAdmin>
+          </RequireAuth>
         }
       />
       <Route path="*" element={<h1>Page not found</h1>} />
@@ -38,8 +52,9 @@ const router = createBrowserRouter(
   )
 );
 
-function RequireAdmin({ children, redirectTo }) {
+function RequireAuth({ children, redirectTo, requireAdmin }) {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -49,9 +64,11 @@ function RequireAdmin({ children, redirectTo }) {
         const isAuthenticated = response.data.isAuthenticated;
         const userRole = response.data.role;
         setIsAdmin(isAuthenticated && userRole === 'admin');
+        setIsLoggedIn(isAuthenticated);
       } catch (error) {
         console.error('Error checking authentication status:', error);
         setIsAdmin(false);
+        setIsLoggedIn(false);
       } finally {
         setIsLoading(false);
       }
@@ -64,7 +81,11 @@ function RequireAdmin({ children, redirectTo }) {
     return <div>Loading...</div>;
   }
 
-  return isAdmin ? children : <Navigate to={redirectTo} />;
+  if(requireAdmin) {
+    return isAdmin ? children : <Navigate to={redirectTo} />;
+  } else {
+    return isLoggedIn ? children : <Navigate to={redirectTo} />;
+  }
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
