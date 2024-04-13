@@ -28,6 +28,9 @@ function App() {
             <li>
               <Link to={`getBooks`}>Books</Link>
             </li>
+            <li>
+              <Link to={`addBook`}>Upload books</Link>
+            </li>
           </>
         }
         {userRole === "admin" &&

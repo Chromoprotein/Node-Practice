@@ -44,10 +44,39 @@ exports.findBooks = async (req, res) => {
     }
 
     const books = await Book.find(query);
+    if(!books) {
+      return res.status(404).json({ message: "Books not found" });
+    }
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 }
 
+exports.addBook = async (req, res) => {
+  try {
+    const { title, author, genre } = req.body
+    // User id comes from authentication middleware
+    const userId = req.id;
 
+    if (!title || !author || !genre || !userId) {
+      return res.status(500).json({
+        message: "Form information missing or user not found",
+      })
+    } else {
+      const book = await Book.create({ userId, title, author, genre })
+      if(book) {
+        res.status(201).json({
+          message: "Book successfully created",
+          bookId: book._id,
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred",
+      error: error.message,
+    })
+  }
+
+}

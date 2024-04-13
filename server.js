@@ -32,7 +32,7 @@ app.use(express.json());
 app.use("/api/auth", require("./Auth/Route"))
 
 // To do: put something in admin
-app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
+//app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
 app.use("/basic", require("./Basic/Route"))
 
 if (process.env.NODE_ENV === 'production') {

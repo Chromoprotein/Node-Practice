@@ -15,6 +15,7 @@ import Users from './Users';
 import Admin from './Admin';
 import App from './App';
 import Books from './Books';
+import AddBook from './AddBook';
 import axios from 'axios';
 
 const router = createBrowserRouter(
@@ -36,6 +37,14 @@ const router = createBrowserRouter(
         element={
           <RequireAuth redirectTo="/login" requireAdmin={false}>
             <Books />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="addBook"
+        element={
+          <RequireAuth redirectTo="/login" requireAdmin={false}>
+            <AddBook />
           </RequireAuth>
         }
       />

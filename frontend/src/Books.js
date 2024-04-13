@@ -8,13 +8,15 @@ export default function Books() {
   const [searchGenre, setSearchGenre] = useState();
 
   useEffect(() => {
-    axios.get(process.env.REACT_APP_BOOKS_URI, { withCredentials: true })
-    .then(res => {
-      setBooks(res.data.books);
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    const getAllBooks = async () => {
+      try {
+        const res = await axios.get(process.env.REACT_APP_BOOKS_URI, { withCredentials: true });
+        setBooks(res.data.books);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    getAllBooks();
   }, [])
 
   const searchQueryHandler = (e) => {
@@ -27,22 +29,22 @@ export default function Books() {
     setSearchGenre(newSearchGenre);
   }
 
-  const searchBooksHandeler = (e) => {
+  // GET request has withCredeintials and params together in the same configuration object
+  const searchBooksHandeler = async (e) => {
     e.preventDefault();
-    console.log("search test " + searchQuery + searchGenre)
-    axios.get(process.env.REACT_APP_SEARCH_URI, { withCredentials: true,
-      params: {
-        title: searchQuery,
-        genre: searchGenre
-      }
-    })
-    .then(res => {
-      const newBooks = res.data; // Accessing the nested books array
-      setBooks(newBooks);
-    })
-    .catch(err => {
-      console.log(err)
-    })
+
+    try {
+      const res = await axios.get(process.env.REACT_APP_SEARCH_URI, { withCredentials: true,
+        params: {
+          title: searchQuery,
+          genre: searchGenre
+        }
+      });
+      setBooks(res.data);
+    } 
+    catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -51,7 +53,7 @@ export default function Books() {
           <input name="search" placeholder="Search books" onChange={searchQueryHandler} />
 
           <select onChange={searchGenreHandler} value={searchGenre}>
-            <option value="" isDisabled={true}>Genre</option>
+            <option value="" disabled selected>Genre</option>
             <option value="Fantasy">Fantasy</option>
             <option value="Sci-fi">Sci-fi</option>
           </select>
