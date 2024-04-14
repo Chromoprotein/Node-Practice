@@ -17,6 +17,7 @@ import App from './App';
 import Books from './Books';
 import AddBook from './AddBook';
 import axios from 'axios';
+import Details from './Details';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,14 @@ const router = createBrowserRouter(
         element={
           <RequireAuth redirectTo="/login" requireAdmin={false}>
             <Books />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="getBooks/details/:id"
+        element={
+          <RequireAuth redirectTo="/login" requireAdmin={false}>
+            <Details />
           </RequireAuth>
         }
       />

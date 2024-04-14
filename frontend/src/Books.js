@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 export default function Books() {
 
@@ -62,11 +63,14 @@ export default function Books() {
         </form>
 
         {books.map((book, index) => {
+          const bookId = book._id;
            return (
             <ul key={index}>
+                <li>Id: {bookId}</li>
                 <li>Name: {book.title}</li>
                 <li>Author: {book.author}</li>
                 <li>Genre: {book.genre}</li>
+                <li><Link to={`details/${bookId}`}>Details</Link></li>
             </ul>
            ) 
         })}

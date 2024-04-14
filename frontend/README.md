@@ -1,6 +1,8 @@
 To do:
 
 - Log out button
-- Post, edit, and delete records
+- display one book
+- edit and delete records
+- read about error handling
 
 - Refresh cookies? What are they?
