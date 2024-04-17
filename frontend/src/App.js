@@ -31,6 +31,9 @@ function App() {
             <li>
               <Link to={`addBook`}>Upload books</Link>
             </li>
+            <li>
+              <Link to={`logout`}>Log out</Link>
+            </li>
           </>
         }
         {userRole === "admin" &&

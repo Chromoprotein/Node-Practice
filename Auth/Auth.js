@@ -176,3 +176,8 @@ exports.userStatus = async (req, res, next) => {
       .json({ isAuthenticated: false })
   }
 }
+
+exports.logout = (req, res) => {
+  res.cookie('jwt', '', { maxAge: 1 }); // Set the jwt cookie to expire immediately
+  res.status(200).json({ message: 'Logged out successfully' });
+};

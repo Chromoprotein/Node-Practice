@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
 import {
   Route,
   Navigate,
@@ -18,6 +16,7 @@ import Books from './Books';
 import AddBook from './AddBook';
 import axios from 'axios';
 import Details from './Details';
+import Logout from './Logout';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +24,7 @@ const router = createBrowserRouter(
       <Route index element={<App />} />
       <Route path="register" element={<Register />} />
       <Route path="login" element={<Login />} />
+      <Route path="logout" element={<Logout />} />
       <Route
         path="getUsers"
         element={
@@ -70,6 +70,8 @@ const router = createBrowserRouter(
   )
 );
 
+// A version of authentication that has loading and navigation
+// For protecting routes
 function RequireAuth({ children, redirectTo, requireAdmin }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -112,8 +114,3 @@ root.render(
       <RouterProvider router={router} />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
