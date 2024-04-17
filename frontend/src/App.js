@@ -3,7 +3,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from './useAuth';
 
 function App() {
-  const { isAuthenticated, userRole } = useAuth();
+  const { isAuthenticated, userRole, loading } = useAuth();
+  console.log(isAuthenticated)
+  if (loading) {
+    console.log("loading in the app.js")
+    return <div>Loading...</div>; // Or any loading spinner
+  }
 
   return (
     <div>

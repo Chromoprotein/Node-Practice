@@ -17,8 +17,9 @@ export default function Logout() {
             }
         }
         logout();
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userRole');
     }, [])
-
 
     return (
         <p>{message && message}</p>

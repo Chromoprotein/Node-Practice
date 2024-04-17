@@ -17,6 +17,7 @@ import AddBook from './AddBook';
 import axios from 'axios';
 import Details from './Details';
 import Logout from './Logout';
+import { useAuth } from './useAuth';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -73,38 +74,18 @@ const router = createBrowserRouter(
 // A version of authentication that has loading and navigation
 // For protecting routes
 function RequireAuth({ children, redirectTo, requireAdmin }) {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(process.env.REACT_APP_STATUS_URI, { withCredentials: true });
-        const isAuthenticated = response.data.isAuthenticated;
-        const userRole = response.data.role;
-        setIsAdmin(isAuthenticated && userRole === 'admin');
-        setIsLoggedIn(isAuthenticated);
-      } catch (error) {
-        console.error('Error checking authentication status:', error);
-        setIsAdmin(false);
-        setIsLoggedIn(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { isAuthenticated, userRole, loading } = useAuth();
 
-    fetchData();
-  }, []);
-
-  if (isLoading) {
+  if (loading) {
+    console.log("loading in the route check")
     return <div>Loading...</div>;
   }
 
   if(requireAdmin) {
-    return isAdmin ? children : <Navigate to={redirectTo} />;
+    return userRole === "admin" ? children : <Navigate to={redirectTo} />;
   } else {
-    return isLoggedIn ? children : <Navigate to={redirectTo} />;
+    return isAuthenticated ? children : <Navigate to={redirectTo} />;
   }
 }
 

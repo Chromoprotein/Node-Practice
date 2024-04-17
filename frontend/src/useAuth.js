@@ -4,38 +4,49 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
+  const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
+  const [loading, setLoading] = useState(isAuthenticated && false); // Added loading state
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await axios.get(process.env.REACT_APP_STATUS_URI, { withCredentials: true });
-        setIsAuthenticated(response.data.isAuthenticated);
-        setUserRole(response.data.role);
-      } catch (error) {
-        console.error('Error checking authentication status:', error);
-        setIsAuthenticated(false);
-        setUserRole(null);
+
+    // Check local storage first to reduce delay
+    if (isAuthenticated === true) {
+      setIsAuthenticated(true);
+      if(userRole === 'admin') {
+        setUserRole("admin");
+      } else {
+        setUserRole("Basic");
       }
-    };
+      setLoading(false);
+    }
+    else {
 
-    checkAuthStatus();
-  }, []);
+      const checkAuthStatus = async () => {
+        try {
+          setLoading(true); // Start loading before the request
+          const response = await axios.get(process.env.REACT_APP_STATUS_URI, { withCredentials: true });
+          setIsAuthenticated(response.data.isAuthenticated);
+          setUserRole(response.data.role);
 
-  return { isAuthenticated, userRole };
+          localStorage.setItem('isAuthenticated', response.data.isAuthenticated.toString());
+          localStorage.setItem('userRole', response.data.role);
+        } catch (error) {
+          console.error('Error checking authentication status:', error);
+          setIsAuthenticated(false);
+          setUserRole(null);
+
+          localStorage.setItem('isAuthenticated', 'false');
+          localStorage.setItem('userRole', 'null');
+        } finally {
+          setLoading(false); // End loading after the request or on error
+        }
+      };
+
+      checkAuthStatus();
+    }
+    
+  }, [isAuthenticated, userRole]);
+
+  return { isAuthenticated, userRole, loading };
 };
-
-
-//export default function User() {
-
-//    const { isAuthenticated, userRole } = useAuth();
-
-//    return (
-//        <div>
-//            <p>User authentication test page</p>
-//            <p>Is authenticated: {isAuthenticated.toString()} </p>
-//            <p>Role: {userRole} </p>
-//        </div>
-//    );
-//};
