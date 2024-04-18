@@ -7,7 +7,7 @@ function App() {
   console.log(isAuthenticated)
   if (loading) {
     console.log("loading in the app.js")
-    return <div>Loading...</div>; // Or any loading spinner
+    return <div>Loading...</div>;
   }
 
   return (

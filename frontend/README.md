@@ -1,8 +1,2 @@
-To do:
-
-- Log out button
-- display one book
-- edit and delete records
-- read about error handling
-
-- Refresh cookies? What are they?
+Example app with Node.js (Express) and MongoDB.
+It has user authentication, normal and admin users, upload, search, edit, and delete functions.

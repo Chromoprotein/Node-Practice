@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
-  const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
+  const [isAuthenticated, setIsAuthenticated] = useState(sessionStorage.getItem('isAuthenticated') === 'true');
+  const [userRole, setUserRole] = useState(sessionStorage.getItem('userRole'));
   const [loading, setLoading] = useState(isAuthenticated && false); // Added loading state
 
   useEffect(() => {
@@ -29,15 +29,15 @@ export const useAuth = () => {
           setIsAuthenticated(response.data.isAuthenticated);
           setUserRole(response.data.role);
 
-          localStorage.setItem('isAuthenticated', response.data.isAuthenticated.toString());
-          localStorage.setItem('userRole', response.data.role);
+          sessionStorage.setItem('isAuthenticated', response.data.isAuthenticated.toString());
+          sessionStorage.setItem('userRole', response.data.role);
         } catch (error) {
           console.error('Error checking authentication status:', error);
           setIsAuthenticated(false);
           setUserRole(null);
 
-          localStorage.setItem('isAuthenticated', 'false');
-          localStorage.setItem('userRole', 'null');
+          sessionStorage.setItem('isAuthenticated', 'false');
+          sessionStorage.setItem('userRole', 'null');
         } finally {
           setLoading(false); // End loading after the request or on error
         }

@@ -17,8 +17,8 @@ export default function Logout() {
             }
         }
         logout();
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('userRole');
+        sessionStorage.removeItem('isAuthenticated');
+        sessionStorage.removeItem('userRole');
     }, [])
 
     return (
