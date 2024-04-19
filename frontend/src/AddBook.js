@@ -43,6 +43,11 @@ export default function AddBook() {
                     <option value="" disabled>Genre</option>
                     <option value="Fantasy">Fantasy</option>
                     <option value="Sci-fi">Sci-fi</option>
+                    <option value="War">War</option>
+                    <option value="Zombies">Zombies</option>
+                    <option value="Crime">Crime</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Nonfiction">Nonfiction</option>
                 </select>
 
                 <button type="submit" onClick={submitFormHandler}>Submit</button>

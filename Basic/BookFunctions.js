@@ -31,7 +31,7 @@ exports.getBooks = async (req, res) => {
 // Search function
 exports.findBooks = async (req, res) => {
   try {
-    const { title, genre } = req.query;
+    const { title, genre, sortBy, page } = req.query;
     
     // User id comes from the auth middleware
     const userId = req.id;
@@ -44,11 +44,34 @@ exports.findBooks = async (req, res) => {
       query.genre = genre;
     }
 
-    const books = await Book.find(query);
+    // Sorting
+    let sort = {};
+    if (sortBy) {
+        const parts = sortBy.split(':');
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+    }
+
+    // Pagination
+    const pageSize = 10;
+    const currentPage = parseInt(page) || 1;
+
+    // Total count of books
+    const totalCount = await Book.countDocuments(query);
+
+    const books = await Book.find(query)
+    .sort(sort)
+    .skip((currentPage - 1) * pageSize)
+    .limit(pageSize);
+
     if(!books) {
       return res.status(404).json({ message: "Books not found" });
     }
-    res.status(200).json(books);
+    res.status(200).json({
+          totalItems: totalCount,
+          totalPages: Math.ceil(totalCount / pageSize),
+          currentPage: currentPage,
+          books
+        });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
